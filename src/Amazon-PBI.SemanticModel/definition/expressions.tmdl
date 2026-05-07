@@ -1,0 +1,23 @@
+expression 'Erros em amazon' =
+		let
+		Fonte = amazon,
+		  #"Incompatibilidades de Tipo Detectadas" = let
+		    tableWithOnlyPrimitiveTypes = Table.SelectColumns(Fonte, Table.ColumnsOfType(Fonte, {type nullable number, type nullable text, type nullable logical, type nullable date, type nullable datetime, type nullable datetimezone, type nullable time, type nullable duration})),
+		    recordTypeFields = Type.RecordFields(Type.TableRow(Value.Type(tableWithOnlyPrimitiveTypes))),
+		    fieldNames = Record.FieldNames(recordTypeFields),
+		    fieldTypes = List.Transform(Record.ToList(recordTypeFields), each [Type]),
+		    pairs = List.Transform(List.Positions(fieldNames), (i) => {fieldNames{i}, (v) => if v = null or Value.Is(v, fieldTypes{i}) then v else error [Message = "O tipo do valor não corresponde ao tipo da coluna.", Detail = v], fieldTypes{i}})
+		in
+		    Table.TransformColumns(Fonte, pairs),
+		  #"Índice Adicionado" = Table.AddIndexColumn(#"Incompatibilidades de Tipo Detectadas", "Número da Linha" ,1),
+		  #"Erros Mantidos" = Table.SelectRowsWithErrors(#"Índice Adicionado", {"product_id", "product_name", "category", "discounted_price", "actual_price", "discount_percentage", "rating", "rating_count", "about_product", "user_id", "user_name", "review_id", "review_title", "review_content", "img_link", "product_link"}),
+		  #"Colunas Reordenadas" = Table.ReorderColumns(#"Erros Mantidos", {"Número da Linha", "product_id", "product_name", "category", "discounted_price", "actual_price", "discount_percentage", "rating", "rating_count", "about_product", "user_id", "user_name", "review_id", "review_title", "review_content", "img_link", "product_link"})
+		in
+		  #"Colunas Reordenadas"
+	lineageTag: f23c8d55-df27-401e-a6f1-a0e1594df247
+	queryGroup: 'Erros na Consulta - 07/05/2026 13:50:58'
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

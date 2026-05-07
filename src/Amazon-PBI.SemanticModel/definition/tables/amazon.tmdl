@@ -1,0 +1,146 @@
+table amazon
+	lineageTag: 5a6ab57d-fb02-4247-8322-03c5e929039c
+
+	column product_id
+		dataType: string
+		lineageTag: 8d68e25a-c74d-4b2e-9c0b-c020f8e79306
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: 35377552-e26d-48f3-8b13-79fd8f07e4e1
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column category
+		dataType: string
+		lineageTag: 73df6a69-d99a-44c2-a7db-a786020c108e
+		summarizeBy: none
+		sourceColumn: category
+
+		annotation SummarizationSetBy = Automatic
+
+	column discounted_price
+		dataType: string
+		lineageTag: 3844b0c2-379d-4ee7-836c-e951cd7b2f9a
+		summarizeBy: none
+		sourceColumn: discounted_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column actual_price
+		dataType: string
+		lineageTag: 75a87ee9-f610-424a-a958-0f85006716ce
+		summarizeBy: none
+		sourceColumn: actual_price
+
+		annotation SummarizationSetBy = Automatic
+
+	column discount_percentage
+		dataType: double
+		lineageTag: 4e8cef90-2a94-4ebe-9324-1d58898db569
+		summarizeBy: sum
+		sourceColumn: discount_percentage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column rating
+		dataType: int64
+		formatString: 0
+		lineageTag: b1bde482-f104-40f6-bf19-214d9873e8f7
+		summarizeBy: sum
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+	column rating_count
+		dataType: string
+		lineageTag: f8cee3b0-909c-4a8f-9d3c-9cce034bdb2d
+		summarizeBy: none
+		sourceColumn: rating_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column about_product
+		dataType: string
+		lineageTag: 89b555df-3029-4c54-9595-b47d18b54e49
+		summarizeBy: none
+		sourceColumn: about_product
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_id
+		dataType: string
+		lineageTag: 101e4faa-bccc-4ec2-82b7-3d75b3028b76
+		summarizeBy: none
+		sourceColumn: user_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column user_name
+		dataType: string
+		lineageTag: d6b35013-04b6-45c4-99e3-4092653bec24
+		summarizeBy: none
+		sourceColumn: user_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_id
+		dataType: string
+		lineageTag: e1e5c028-7d25-495f-92fa-675bc6ba7fa3
+		summarizeBy: none
+		sourceColumn: review_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_title
+		dataType: string
+		lineageTag: 42a354aa-704d-418a-abeb-3406e205beb3
+		summarizeBy: none
+		sourceColumn: review_title
+
+		annotation SummarizationSetBy = Automatic
+
+	column review_content
+		dataType: string
+		lineageTag: 4b1833fd-9c38-48af-abc7-3f3c45ccb9e8
+		summarizeBy: none
+		sourceColumn: review_content
+
+		annotation SummarizationSetBy = Automatic
+
+	column img_link
+		dataType: string
+		lineageTag: c7ceda38-7cf1-4267-962d-9f5f1008f101
+		summarizeBy: none
+		sourceColumn: img_link
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_link
+		dataType: string
+		lineageTag: fc09725e-8ab8-440d-9202-78da1a420769
+		summarizeBy: none
+		sourceColumn: product_link
+
+		annotation SummarizationSetBy = Automatic
+
+	partition amazon = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\Usuario\Documents\PowerBI-Repo\PBIRepoTest\amazon.csv"),[Delimiter=",", Columns=16, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"product_id", type text}, {"product_name", type text}, {"category", type text}, {"discounted_price", type text}, {"actual_price", type text}, {"discount_percentage", Percentage.Type}, {"rating", Int64.Type}, {"rating_count", type text}, {"about_product", type text}, {"user_id", type text}, {"user_name", type text}, {"review_id", type text}, {"review_title", type text}, {"review_content", type text}, {"img_link", type text}, {"product_link", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+
