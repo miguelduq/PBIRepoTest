@@ -1,6 +1,10 @@
 table amazon
 	lineageTag: 5a6ab57d-fb02-4247-8322-03c5e929039c
 
+	measure 'price sum' = SUM(amazon[actual_price])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 24ed51af-e4bb-49cd-bfbe-106cb0a8d935
+
 	column product_id
 		dataType: string
 		lineageTag: 8d68e25a-c74d-4b2e-9c0b-c020f8e79306
